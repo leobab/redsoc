@@ -1,2 +1,0 @@
-# redsoc
- Proyecto Red Social
