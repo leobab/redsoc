@@ -60,6 +60,7 @@ userctrl.registrarse = async (req, res) => {
 
 }
 
+
 userctrl.ver_sesion = async (req, res) => {
 
     try {
@@ -308,6 +309,44 @@ userctrl.ver_perfil = async (req, res) => {
 
 
 }
+/*EVENTOS*/
+userctrl.insertar_eventos =  async (req, res) => {
+    const evento = req.body;
+    let insertQuery = `INSERT INTO evento (fecha_hora_evento, lugar_evento, logo, nombre_evento, categoria, descripcion, organizadores) VALUES ('${evento.fecha_hora_evento}', '${evento.lugar_evento}', '${evento.logo}', '${evento.nombre_evento}', '${evento.categoria}', '${evento.descripcion}', '${evento.organizadores}')`;
+    console.log(insertQuery);
+    pool.query(insertQuery,  async (err, result) => {
+        if (!err) {
+            res.status(200).json({ mensaje: true });            
+            client.end;
+        } else {
+            res.status(500).json({ mensaje: err.message });
+            console.log(err.message);
+        }
+    });
+    pool.end;
+}
 
+userctrl.obtenerEventos =  async (req, res) => {
+    try {        
+        const evento = await pool.query("SELECT * FROM evento");
+        //console.log(evento.rows[0]);
+        res.status(200).json({ mensaje: true, evento: evento.rows});
+    } catch (e) {
+        res.status(500).json({ mensaje: false, error: e });
+        console.log(e);
+    }
+}
 
+userctrl.obtenerEventosCategoria =  async (req, res) => {
+    try {        
+        const categoria = req.params["categoria"];
+        console.log("categoria actual: "+categoria);
+        const evento = await pool.query('SELECT * FROM evento WHERE categoria  =$1',[categoria]);
+        //console.log(evento.rows[0]);
+        res.status(200).json({ mensaje: true, evento: evento.rows});
+    } catch (e) {
+        res.status(500).json({ mensaje: false, error: e });
+        console.log(e);
+    }
+}
 module.exports = userctrl;

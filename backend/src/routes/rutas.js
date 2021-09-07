@@ -4,7 +4,6 @@ const multer = require("../libs/multer");
 
 
 module.exports = (app) =>{
-
     
     app.get("/api/prueba", usuarios.prueba);
     app.post("/api/ingresar", usuarios.ingresar);
@@ -15,4 +14,8 @@ module.exports = (app) =>{
     app.post("/api/enviar_codverificacion", usuarios.enviar_codverificacion);
     app.post("/api/completar_registro",multer.array("images",2),usuarios.completar_registro);
     app.get("/api/usuario/:id", usuarios.ver_perfil);
+    app.post("/api/insertar_eventos", usuarios.insertar_eventos);
+    app.get("/api/obtenerEventos/", usuarios.obtenerEventos);
+    app.get("/api/obtenerEventosCategoria/:categoria", usuarios.obtenerEventosCategoria);
+
 }
